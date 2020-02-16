@@ -23,7 +23,9 @@ pipeline {
          steps {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
               build job: "Autotests_run", 
-                    parameters: [string(name: 'ip', value: String.valueOf(TF_VAR_IP))]                
+                    parameters: [string(name: 'ip', value: String.valueOf(script{
+               sh "echo terraform output aws_instance_public_ip"
+            }))]                
             }                
             }
             
