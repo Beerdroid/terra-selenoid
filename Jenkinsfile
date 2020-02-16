@@ -15,7 +15,9 @@ pipeline {
             sh "terraform init -input=false"
             sh "terraform plan -lock=false"
             sh "terraform apply -input=false -auto-approve"
-            sh "TF_VAR_IP='echo terraform output aws_instance_public_ip'"
+            script{
+            TF_VAR_IP= sh'echo terraform output aws_instance_public_ip'"
+            }
             sh "echo $TF_VAR_IP"
             }
          }
@@ -23,9 +25,7 @@ pipeline {
          steps {
               catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
               build job: "Autotests_run", 
-                    parameters: [string(name: 'ip', value: String.valueOf(script{
-               sh "echo terraform output aws_instance_public_ip"
-            }))]                
+                    parameters: [string(name: 'ip', value: String.valueOf(TF_VAR_IP))]                
             }                
             }
             
