@@ -20,7 +20,7 @@ pipeline {
                TF_VAR_IP = readFile('ip.txt').trim()
             }
             sh "echo $TF_VAR_IP"
-            sleep 5m
+            sleep 300
             }
          }
     stage('Test suite is in progress') {
