@@ -2,16 +2,6 @@ provider "aws" {
   region     = "eu-central-1"
 }
 
-resource "aws_eip" "by_allocation_id" {
-    tags = {
-    Name = "Selenoid_test"
-  }
-}
-
-resource "aws_eip_association" "eip_assoc" {
-  instance_id   = aws_instance.ubuntu_selenoid.id
-  allocation_id = aws_eip.by_allocation_id.id
-  }
 resource "aws_instance" "ubuntu_selenoid" {
   ami                    = "ami-0b418580298265d5c"
   instance_type          = "t2.micro"
@@ -21,7 +11,7 @@ resource "aws_instance" "ubuntu_selenoid" {
 }
 
 output "aws_instance_public_ip" {
-  value = aws_eip_association.eip_assoc.public_ip
+  value = aws_instance.ubuntu_selenoid.public_ip
 }
 
 resource "aws_security_group" "selenoid_sg" {
