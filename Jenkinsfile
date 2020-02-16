@@ -16,7 +16,7 @@ pipeline {
             sh "terraform plan -lock=false"
             sh "terraform apply -input=false -auto-approve"
             script{
-            TF_VAR_IP= "updated"
+               TF_VAR_IP= sh "echo terraform output aws_instance_public_ip"
             }
             sh "echo $TF_VAR_IP"
             }
